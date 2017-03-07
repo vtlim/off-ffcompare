@@ -2,6 +2,8 @@
 
 """
 
+Written by Victoria Lim and Daisy Kyu @ Mobley Lab UCI
+
 ### Description: This Python script loops over a directory of mol2 files, and
 #      minimizes each with the specified force field (see supported FFs below).
 #      In the directory where this script is called, a subdirectory is created
@@ -68,6 +70,17 @@ from smarty import forcefield_utils as ff_utils
 
 
 def writeUpdatedMol(Mol, fname):
+    """
+    
+    Parameters
+    ----------
+    Mol: an OEChem molecule
+    
+    Returns
+    ----------
+    fname: str - name of the output mol2 file
+    
+    """
 
     # Open output file to write molecule.
     ofs = oechem.oemolostream()
@@ -144,13 +157,13 @@ def optMMFF(Mol, FF, fname):
 
 def prepSMIRFF(Mol, FF_file):
     """
+    
     Creates OpenMM Topology, System, and initial positions of given molecule.
 
     Parameters
     ----------
     Mol: an OEChem molecule
     FF_file: string name of *.ffxml file with path
-
 
     Returns
     -------
@@ -171,14 +184,14 @@ def prepSMIRFF(Mol, FF_file):
 
 def prepGAFFx(parm):
     """
+    
     Creates topology, system, and coordinates for AMBER
        Prmtop and Inpcrd input files. This function should work
        with either GAFF or GAFF2 files.
 
     Parameters
     ----------
-    parm
-
+    parm: Prmtop and Inpcrd files 
 
     Returns
     -------
@@ -197,6 +210,7 @@ def prepGAFFx(parm):
 
 def minimizeOpenMM(Topology, System, Positions):
     """
+    
     Minimize molecule with specified topology, system, and positions
        using OpenMM. Return the positions of the optimized moelcule.
 
@@ -208,7 +222,8 @@ def minimizeOpenMM(Topology, System, Positions):
 
     Returns
     -------
-
+    Topology: OpenMM topology positions for minimized mol
+    
     """
 
     # need to create integrator but don't think it's used
@@ -234,8 +249,22 @@ def minimizeOpenMM(Topology, System, Positions):
 
 
 def load_and_minimize(infiles, dommff, dosmirff, ffxml, dogaff, dogaff2, gaffdir):
-
-
+    """
+    
+    This function loads the molecule and minimizes it 
+    (if it does not already exist) based on the specified fftype.
+    
+    Parameters
+    ----------
+    infiles: Path to directory containing all mol2 files 
+    dommff: Minimizes using MMFF94 or MMFF94S 
+    dosmirff: Minimizes using SMIRFF
+    ffxml: Path and string name of *.ffxml file
+    dogaff: Minimizes using GAFF
+    dogaff2: Minimizes using GAFF2
+    gaffdir: Path to directory containing Inpcrd and Prmtop files
+    
+    """
     molfiles = glob.glob(os.path.join(infiles, '*.mol2'))
 
     ### Loop over mols.
