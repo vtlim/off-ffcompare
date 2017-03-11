@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 """
+Written by: Victoria Lim and Daisy Kyu @ Mobley Lab UCI
 
 Written by Victoria Lim and Daisy Kyu @ Mobley Lab UCI
 
