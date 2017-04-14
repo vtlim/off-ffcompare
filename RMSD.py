@@ -62,7 +62,7 @@ def RMSD(ref_mol2, query_mol2):
         # rmsd calculate
         rms = oechem.OERMSD(rmol,qmol, True, True , True)
     else:
-        rms == -2
+        rms = -2
     return rms        
         
 #----------------------------Parse Inputs-----------------------------------#
@@ -72,12 +72,12 @@ if __name__ == '__main__':
 
     parser = OptionParser()
     parser.add_option('-r','--ref',
-            help = "Name of the reference force field",
+            help = "Name(s) of the reference force field(s)",
             type = "string",
             dest = 'ref')
 
     parser.add_option('-c','--compare',
-            help = "Name of the compared force field",
+            help = "Name(s) of the compared force field(s)",
             type = "string",
             dest = 'compare')
 
@@ -85,11 +85,6 @@ if __name__ == '__main__':
             help = "Name of the full path directory which will contain all generated MOL2 files for compared force field",
             type = "string",
             dest = 'directory')
-
-    parser.add_option('-o','--output',
-            help = "Name of the reference molecule being compared",
-            type = "string",
-            dest = 'output')
 
     (opt, args) = parser.parse_args()
 
@@ -103,22 +98,26 @@ if __name__ == '__main__':
 
 
     # set up an error file to record molecule does not exist
-    errFile = open('rmd_logfile.txt','a')
+    errFile = open('rmsd_logfile.txt','a')
     # set up a file to catch negative value
     nValue = open('negative_value.txt','a')
     # set up a log file for RMSD
     logFile = open('RMSD.txt','a')
+    logFile.write("# Reference Force Field: %s \n" % opt.ref)
+    logFile.write("# Molecue Set Directory: %s \n" % opt.directory)
     
-    refMols = os.listdir(opt.directory + opt.ref)
-
+    refMols = os.listdir(opt.directory + '/' + opt.ref + '/')
     listFFs = opt.compare.split(',')
+    ff_string = "\t".join(listFFs)
+    logFile.write("# MolName \t %30s \n " % ff_string)
 
     # loop through each file in the directory and feed them into the funciton
     for mol2_file in refMols:
+        rms_list = list()
+        molName = mol2_file.split('.')[0]
         for queryMol in listFFs:
-            ref_file = opt.directory + opt.ref + mol2_file
-            query_file = opt.directory + queryMol + mol2_file
-            molName = mol2_file.split('.')[0]
+            ref_file = opt.directory + '/' + opt.ref + '/' + mol2_file
+            query_file = opt.directory + '/' + queryMol + '/' + mol2_file
             value =  RMSD(ref_file,query_file)
 
             # different SMILE strings detected
@@ -129,9 +128,12 @@ if __name__ == '__main__':
             elif value == -2:
                 oechem.OEThrow.Warning("Unable to locate %s. Skipping." % query_file)
                 #print ("Unable to locate %s. Skipping." % molName)
-                errFile.write("This queryMol does not exist: %s\t%s\tNaN\n" % (opt.compare, molName) )
+                errFile.write("This queryMol does not exist: %s\n" % query_file )
             else:
-                logFile.write("%s\t%s\t%s\t%.3e\n" % (molName, opt.ref, queryMol, value) )
+                rms_list.append("%.3e" % value)
+        #for each query mol2 file that match reference mol2 file, write out the rms value to the list
+        rms_string = "\t".join(rms_list)
+        logFile.write("%5s\t%s\n" % (molName,rms_string))
 
     errFile.close()
     nValue.close()
