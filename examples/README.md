@@ -37,3 +37,16 @@ python min_oe_openMM.py --inmols examples/tripos_mol2/ \
 * `MMFF94(S)/` - minimized mol2 files with MMFF94(S)
 * `SMIRNOFF/` - minimized mol2 files with SMIRNOFF
 * `output.dat` - output file reporting any errors with min_oe_openMM.py
+
+* AlkEthOH-set of specific mol2 files 
+
+```
+python RMSD.py --ref SMIRFF \
+    --compare GAFF,GAFF2 \
+    --directory path/containing/directory/AlkEthOH/examples
+```
+* example directory layout:
+/path/containing/optimized/directories
+/path/containing/optimized/directories/AlkEthOH/GAFF/mol2
+/path/containing/optimized/directories/AlkEthOH/GAFF2
+/path/containing/optimized/directories/etc.
