@@ -29,7 +29,7 @@ import os
 
   # ---------------------------- Functions ------------------------- #
 
-def OPLSMin(ifile,opttype):
+def OPLSMin(ifile,opttype, outdir):
     """
    
     Take one mol2 file and do the minimization, then output into
@@ -41,6 +41,7 @@ def OPLSMin(ifile,opttype):
     ----------
     ifile: string, input file directory.
     opttype: string, force field type. Either 'OPLS3' or 'OPLS2005'.
+    outdir: string, ouput directory
 
    
     """
@@ -48,16 +49,16 @@ def OPLSMin(ifile,opttype):
     if opttype == 'OPLS3':  #specify which fftype to be run
 
         cmd = '$SCHRODINGER/utilities/ffld_server  -version 16 -charges_from_ct -virt \
-               -no_cm1a_bcc -opt -BFGS -imol2 /input_location/%s \ 
-               -omol2 /output_location/%s'% (ifile,ifile.split('/')[-1])
+               -no_cm1a_bcc -opt -BFGS -imol2 %s \ 
+               -omol2 %s/%s'% (ifile, outdir, ifile.split('/')[-1])
 
         os.system(cmd)      #execute the command from the shell
 
     if opttype == 'OPLS2005':
 
         cmd = '$SCHRODINGER/utilities/ffld_server -version 14 -charges_from_ct -virt \
-               -no_cm1a_bcc -opt -BFGS -imol2 /input_location/%s \ 
-               -omol2 /output_location/%s' % (ifile,ifile.split('/')[-1])
+               -no_cm1a_bcc -opt -BFGS -imol2 %s \ 
+               -omol2 %s/%s' % (ifile, outdir, ifile.split('/')[-1])
 
         os.system(cmd)
 
@@ -77,7 +78,12 @@ if __name__ == '__main__':
             help = "Name of the force field type to be used for minimization",
             type = "string",
             dest = 'opttype')
+    
+    parser.add_option('-d','--outdir',
+            help = "Directory of the output location",
+            type = "string",
+            dest = 'outdir')
     (opt, args) = parser.parse_args()
-    OPLSMin(opt.ifile,opt.opttype)
+    OPLSMin(opt.ifile,opt.opttype,opt.outdir)
 
 
