@@ -47,6 +47,15 @@ python RMSD.py --ref SMIRFF \
 ```
 * example directory layout:
 /path/containing/optimized/directories
-/path/containing/optimized/directories/AlkEthOH/GAFF/mol2
+/path/containing/optimized/directories/AlkEthOH/GAFF/mol2files
 /path/containing/optimized/directories/AlkEthOH/GAFF2
 /path/containing/optimized/directories/etc.
+
+```
+python OPLS.py --input path/containing/directory/ALkEthOH/examples \
+    --optimizetype OPLS3 \
+    --outdir path/containing/desired/output/directory/
+
+```
+* example directory layout:
+/path/containing/directory/AlkEthOH/mol2files
