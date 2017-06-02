@@ -8,6 +8,7 @@ and a list of output files/directories for each.
 
 * `AlkEthOH_chain_tiny.smi` - smiles strings for this molecules
 
+### SMILES to SDF
 ```
 python smi2sdf.py --smiles examples/AlkEthOH_chain_tiny.smi \
 --sdf examples/AlkEthOH_chain_tiny.sdf
@@ -15,6 +16,7 @@ python smi2sdf.py --smiles examples/AlkEthOH_chain_tiny.smi \
 
 * `AlkEthOH_chain_tiny.sdf` - SDF file with all molecules in input smiles file
 
+### Generating input files
 ```
 python genMOL2.py -i examples/AlkEthOH_chain_tiny.sdf -l examples/
 ```
@@ -24,6 +26,7 @@ python genMOL2.py -i examples/AlkEthOH_chain_tiny.sdf -l examples/
 * `gaff2\_mol2/` - directory of input GAFF2 files
 * `timer.dat` - timer data for creating mol2 files
 
+### Minimizing Molecules
 ```
 python min_oe_openMM.py --inmols examples/tripos_mol2/ \
     --ffxml smirnoff99Frosst.ffxml \
@@ -38,6 +41,7 @@ python min_oe_openMM.py --inmols examples/tripos_mol2/ \
 * `SMIRNOFF/` - minimized mol2 files with SMIRNOFF
 * `output.dat` - output file reporting any errors with min_oe_openMM.py
 
+<<<<<<< HEAD
 * AlkEthOH-set of specific mol2 files 
 
 ```
@@ -59,3 +63,26 @@ python OPLS.py --input path/containing/directory/ALkEthOH/examples \
 ```
 * example directory layout:
 /path/containing/directory/AlkEthOH/mol2files
+=======
+```
+python OPLS.py --idir examples/tripos_mol2/ \
+    --dir2005 examples/OPLS2005/ \
+    --dir3 examples/OPLS3/
+```
+
+* `OPLS3` - minimized mol2 files with OPLS3
+* `OPLS2005` - minimized mol2 files with OPLS2005
+
+### RMSD calculations
+
+```
+python RMSD.py \
+    --ref SMIRNOFF,GAFF,GAFF2,MMFF94,MMFF94S,OPLS2005,OPLS3 \
+    --compare SMIRNOFF,GAFF,GAFF2,MMFF94,MMFF94S,OPLS2005,OPLS3 \
+    --directory examples/ 
+```
+
+* `RMSD.txt` - complete data table for RMSDs comparing each pair of forcefields for each molecule
+* `negavite_value.txt` - file that would enumerate molecules that did not match from different force field
+* `rmsd_errfile.txt` - file that would enumerate errors with opening minimized mol2 files if they existed 
+>>>>>>> acae7fe852626e8c2eae5cb9d601bff40e6c3bc8
