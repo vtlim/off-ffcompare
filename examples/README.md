@@ -41,6 +41,29 @@ python min_oe_openMM.py --inmols examples/tripos_mol2/ \
 * `SMIRNOFF/` - minimized mol2 files with SMIRNOFF
 * `output.dat` - output file reporting any errors with min_oe_openMM.py
 
+<<<<<<< HEAD
+* AlkEthOH-set of specific mol2 files 
+
+```
+python RMSD.py --ref SMIRFF \
+    --compare GAFF,GAFF2 \
+    --directory path/containing/directory/AlkEthOH/examples
+```
+* example directory layout:
+/path/containing/optimized/directories
+/path/containing/optimized/directories/AlkEthOH/GAFF/mol2files
+/path/containing/optimized/directories/AlkEthOH/GAFF2
+/path/containing/optimized/directories/etc.
+
+```
+python OPLS.py --input path/containing/directory/ALkEthOH/examples \
+    --optimizetype OPLS3 \
+    --outdir path/containing/desired/output/directory/
+
+```
+* example directory layout:
+/path/containing/directory/AlkEthOH/mol2files
+=======
 ```
 python OPLS.py --idir examples/tripos_mol2/ \
     --dir2005 examples/OPLS2005/ \
@@ -62,3 +85,4 @@ python RMSD.py \
 * `RMSD.txt` - complete data table for RMSDs comparing each pair of forcefields for each molecule
 * `negavite_value.txt` - file that would enumerate molecules that did not match from different force field
 * `rmsd_errfile.txt` - file that would enumerate errors with opening minimized mol2 files if they existed 
+>>>>>>> acae7fe852626e8c2eae5cb9d601bff40e6c3bc8
